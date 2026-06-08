@@ -56,7 +56,7 @@ export default async function SequencesPage() {
           {sequences.map((seq) => (
             <Link
               key={seq.id}
-              href={`/dashboard/sequences/${seq.id}`}
+              href={`/dashboard/sequences/${seq.id}` as never}
               className="block bg-white rounded-xl border border-gray-200 p-5 hover:border-brand-300 transition-colors"
             >
               <div className="flex items-center justify-between">
