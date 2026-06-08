@@ -1,0 +1,13 @@
+packages:
+  - .
+
+allowBuilds:
+  esbuild: false
+  sharp: false
+  unrs-resolver: false
+
+settings:
+  onlyBuiltDependencies:
+    - esbuild
+    - sharp
+    - unrs-resolver

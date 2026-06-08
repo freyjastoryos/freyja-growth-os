@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//Users/freyjapublishing/.config/pnpm/**)",
+      "Bash(/Users/freyjapublishing/.local/share/pnpm/bin/pnpm config *)",
+      "Read(//Users/freyjapublishing/Library/pnpm/**)",
+      "Read(//Users/freyjapublishing/.local/share/pnpm/**)",
+      "Bash(find /Users/freyjapublishing -name \"node\" -maxdepth 8 2>/dev/null | grep -v node_modules | head -10)",
+      "Bash(/Users/freyjapublishing/.local/share/pnpm/bin/pnpm dlx *)",
+      "Bash(/Users/freyjapublishing/.local/share/pnpm/bin/pnpm env *)"
+    ]
+  }
+}

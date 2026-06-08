@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+    border-color: #e5e7eb;
+  }
+
+  body {
+    background-color: #ffffff;
+    color: #111827;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
