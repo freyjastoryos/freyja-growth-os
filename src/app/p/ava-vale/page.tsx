@@ -307,13 +307,15 @@ export default function AvaValePage() {
           <p className="footer-tagline">✨ Intoxicating Passion &nbsp;·&nbsp; Quiet Devotion &nbsp;·&nbsp; Lasting Love</p>
 
           <div className="social-links">
-            <a href="https://www.facebook.com/AvaValeAuthor" target="_blank" rel="noopener noreferrer" className="social-link">Facebook</a>
+            <a href="https://amazon.com/author/avavale" target="_blank" rel="noopener noreferrer" className="social-link">Amazon</a>
             <span className="social-dot">✦</span>
-            <a href="https://www.instagram.com/avavaleauthor" target="_blank" rel="noopener noreferrer" className="social-link">Instagram</a>
+            <a href="https://facebook.com/AvaValeAuthor" target="_blank" rel="noopener noreferrer" className="social-link">Facebook</a>
             <span className="social-dot">✦</span>
-            <a href="https://www.tiktok.com/@avavaleauthor" target="_blank" rel="noopener noreferrer" className="social-link">TikTok</a>
+            <a href="https://instagram.com/avavaleauthor" target="_blank" rel="noopener noreferrer" className="social-link">Instagram</a>
             <span className="social-dot">✦</span>
-            <a href="https://www.avavaleauthor.com" target="_blank" rel="noopener noreferrer" className="social-link">AvaValeAuthor.com</a>
+            <a href="https://tiktok.com/@avavaleauthor" target="_blank" rel="noopener noreferrer" className="social-link">TikTok</a>
+            <span className="social-dot">✦</span>
+            <a href="https://avavaleauthor.com" target="_blank" rel="noopener noreferrer" className="social-link">AvaValeAuthor.com</a>
           </div>
 
           <p className="footer-copy">©2025 Ava Vale &nbsp;·&nbsp; All Rights Reserved</p>
