@@ -1,84 +1,71 @@
 export const runtime = "nodejs";
 import { NextRequest, NextResponse } from "next/server";
-import { eq, lte, and } from "drizzle-orm";
-import { db } from "@/db";
-import {
-  emailSends,
-  sequenceEmails,
-  subscribers,
-  creators,
-} from "@/db/schema";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { sendEmail } from "@/lib/email";
 
-// Called by Vercel Cron every hour: vercel.json -> "0 * * * *"
 export async function GET(req: NextRequest) {
   const authHeader = req.headers.get("authorization");
   if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const now = new Date();
+  const sb = createAdminClient();
+  const now = new Date().toISOString();
 
-  // Find all queued sends that are due
-  const due = await db
-    .select({
-      send: emailSends,
-      email: sequenceEmails,
-      subscriber: subscribers,
-      creator: creators,
-    })
-    .from(emailSends)
-    .innerJoin(sequenceEmails, eq(emailSends.sequenceEmailId, sequenceEmails.id))
-    .innerJoin(subscribers, eq(emailSends.subscriberId, subscribers.id))
-    .innerJoin(creators, eq(subscribers.creatorId, creators.id))
-    .where(
-      and(
-        eq(emailSends.status, "queued"),
-        lte(emailSends.scheduledFor, now),
-        eq(subscribers.status, "active")
-      )
-    )
-    .limit(50); // process in batches
+  const { data: due } = await sb
+    .from("email_sends")
+    .select(`
+      id,
+      subscriber_id,
+      sequence_email_id,
+      sequence_emails ( subject, body_html, body_text ),
+      subscribers ( email, first_name, status, creator_id ),
+      status
+    `)
+    .eq("status", "queued")
+    .lte("scheduled_for", now)
+    .limit(50);
 
   let sent = 0;
   let failed = 0;
 
-  for (const row of due) {
-    try {
-      const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://freyjaos.com";
-      const unsubLink = `${appUrl}/api/unsubscribe?id=${row.subscriber.id}`;
+  for (const row of (due ?? [])) {
+    const seqEmail = row.sequence_emails as { subject: string; body_html: string; body_text?: string } | null;
+    const subscriber = row.subscribers as { email: string; first_name?: string; status: string; creator_id: string } | null;
 
-      const htmlWithUnsub = `
-        ${row.email.bodyHtml}
-        <hr style="margin:40px 0;border:none;border-top:1px solid #e5e7eb"/>
-        <p style="color:#9ca3af;font-size:12px;text-align:center">
-          Don't want these emails? <a href="${unsubLink}" style="color:#9ca3af">Unsubscribe</a>
-        </p>
-      `;
+    if (!seqEmail || !subscriber || subscriber.status !== "active") continue;
+
+    try {
+      const { data: creators } = await sb
+        .from("creators")
+        .select("sender_name, reply_to_email")
+        .eq("id", subscriber.creator_id)
+        .limit(1);
+      const creator = creators?.[0];
+
+      const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://avavaleauthor.com";
+      const unsubLink = `${appUrl}/api/unsubscribe?id=${row.subscriber_id}`;
+
+      const html = seqEmail.body_html
+        .replace(/\{\{firstName\}\}/g, subscriber.first_name || "there")
+        .replace(/\{\{unsubscribeUrl\}\}/g, unsubLink);
 
       await sendEmail({
-        to: row.subscriber.email,
-        from: row.creator.senderName
-          ? `${row.creator.senderName} <welcome@avavaleauthor.com>`
+        to: subscriber.email,
+        from: creator?.sender_name
+          ? `${creator.sender_name} <welcome@avavaleauthor.com>`
           : "Ava Vale <welcome@avavaleauthor.com>",
-        replyTo: row.creator.replyToEmail ?? undefined,
-        subject: row.email.subject,
-        html: htmlWithUnsub,
-        text: row.email.bodyText ?? undefined,
+        replyTo: creator?.reply_to_email ?? undefined,
+        subject: seqEmail.subject,
+        html,
+        text: seqEmail.body_text ?? undefined,
       });
 
-      await db
-        .update(emailSends)
-        .set({ status: "sent", sentAt: new Date() })
-        .where(eq(emailSends.id, row.send.id));
-
+      await sb.from("email_sends").update({ status: "sent", sent_at: new Date().toISOString() }).eq("id", row.id);
       sent++;
     } catch (err) {
-      console.error(`Failed to send email ${row.send.id}:`, err);
-      await db
-        .update(emailSends)
-        .set({ status: "failed" })
-        .where(eq(emailSends.id, row.send.id));
+      console.error(`Failed to send ${row.id}:`, err);
+      await sb.from("email_sends").update({ status: "failed" }).eq("id", row.id);
       failed++;
     }
   }
