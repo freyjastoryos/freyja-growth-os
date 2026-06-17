@@ -30,8 +30,8 @@ export async function GET(req: NextRequest) {
   let failed = 0;
 
   for (const row of (due ?? [])) {
-    const seqEmail = row.sequence_emails as { subject: string; body_html: string; body_text?: string } | null;
-    const subscriber = row.subscribers as { email: string; first_name?: string; status: string; creator_id: string } | null;
+    const seqEmail = (Array.isArray(row.sequence_emails) ? row.sequence_emails[0] : row.sequence_emails) as { subject: string; body_html: string; body_text?: string } | null;
+    const subscriber = (Array.isArray(row.subscribers) ? row.subscribers[0] : row.subscribers) as { email: string; first_name?: string; status: string; creator_id: string } | null;
 
     if (!seqEmail || !subscriber || subscriber.status !== "active") continue;
 
