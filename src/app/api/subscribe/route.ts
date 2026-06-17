@@ -67,32 +67,7 @@ export async function POST(req: NextRequest) {
       .from(creators)
       .where(eq(creators.id, page.creatorId));
 
-    // Deliver lead magnet if set
-    if (page.leadMagnetId) {
-      const [magnet] = await db
-        .select()
-        .from(leadMagnets)
-        .where(eq(leadMagnets.id, page.leadMagnetId));
-
-      if (magnet) {
-        await sendEmail({
-          to: email,
-          from: creator?.senderName
-            ? `${creator.senderName} <noreply@freyjaos.com>`
-            : "Freyja Growth OS <noreply@freyjaos.com>",
-          replyTo: creator?.replyToEmail ?? undefined,
-          subject: `Here's your ${magnet.title}`,
-          html: `
-            <p>Hi${firstName ? ` ${firstName}` : ""},</p>
-            <p>Thanks for signing up! Here's your free resource:</p>
-            <p><a href="${magnet.fileUrl}" style="background:#7c3aed;color:white;padding:12px 24px;border-radius:6px;text-decoration:none;display:inline-block;">Download: ${magnet.title}</a></p>
-            <p>Keep an eye on your inbox — more good stuff is coming.</p>
-          `,
-        });
-      }
-    }
-
-    // Queue welcome sequence emails
+    // Queue welcome sequence emails (sequence email handles lead magnet delivery)
     const [sequence] = await db
       .select()
       .from(emailSequences)

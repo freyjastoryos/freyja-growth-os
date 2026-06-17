@@ -59,8 +59,8 @@ export async function GET(req: NextRequest) {
       await sendEmail({
         to: row.subscriber.email,
         from: row.creator.senderName
-          ? `${row.creator.senderName} <noreply@freyjaos.com>`
-          : "Freyja Growth OS <noreply@freyjaos.com>",
+          ? `${row.creator.senderName} <welcome@avavaleauthor.com>`
+          : "Ava Vale <welcome@avavaleauthor.com>",
         replyTo: row.creator.replyToEmail ?? undefined,
         subject: row.email.subject,
         html: htmlWithUnsub,

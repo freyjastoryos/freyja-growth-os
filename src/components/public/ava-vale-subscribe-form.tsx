@@ -34,8 +34,8 @@ export function AvaValeSubscribeForm({ heroMode, signupMode }: Props) {
         fontFamily: "'Cormorant Garamond', serif",
       }}>
         <p style={{ fontSize: "22px", fontStyle: "italic", color: "#4A3F38", lineHeight: "1.7" }}>
-          Thank you for joining the Ava Vale Inner Circle.<br />
-          <span style={{ color: "#B8927A" }}>Your exclusive bonus scene is on its way.</span>
+          The door is open. Welcome inside. 🗝️<br />
+          <span style={{ color: "#B8927A" }}>Your welcome gift is on its way.</span>
         </p>
       </div>
     );
@@ -54,10 +54,10 @@ export function AvaValeSubscribeForm({ heroMode, signupMode }: Props) {
           style={heroInputStyle}
         />
         <button type="submit" disabled={status === "loading"} style={heroButtonStyle}>
-          {status === "loading" ? "One moment…" : "Yes. I want to feel it."}
+          {status === "loading" ? "One moment…" : "🗝️  Open the Secret Door"}
         </button>
         <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "12px", color: "#B8927A", letterSpacing: "0.05em", fontStyle: "italic" }}>
-          Your first exclusive scene arrives immediately.
+          Watch your inbox — something beautiful is on its way.
         </p>
       </form>
     );
@@ -87,7 +87,7 @@ export function AvaValeSubscribeForm({ heroMode, signupMode }: Props) {
         </p>
       )}
       <button type="submit" disabled={status === "loading"} style={signupButtonStyle}>
-        {status === "loading" ? "One moment…" : "SEND ME MY FIRST EXCLUSIVE SCENE"}
+        {status === "loading" ? "One moment…" : "✨  Yes, I Want to Open the Secret Door"}
       </button>
       <p style={{
         fontFamily: "'Inter', sans-serif",
@@ -97,7 +97,7 @@ export function AvaValeSubscribeForm({ heroMode, signupMode }: Props) {
         fontStyle: "italic",
         letterSpacing: "0.03em",
       }}>
-        Your first exclusive scene arrives immediately.
+        Watch your inbox — something beautiful is on its way.
       </p>
     </form>
   );
@@ -119,17 +119,18 @@ const heroInputStyle: React.CSSProperties = {
 
 const heroButtonStyle: React.CSSProperties = {
   width: "100%",
-  backgroundColor: "#2D2A28",
-  color: "#F5F0EA",
-  border: "1px solid rgba(200,178,138,0.3)",
-  borderRadius: "4px",
+  backgroundColor: "#A67868",
+  color: "#FDF7F2",
+  border: "none",
+  borderRadius: "3px",
   padding: "17px 28px",
   fontSize: "11px",
-  letterSpacing: "0.2em",
+  letterSpacing: "0.22em",
   textTransform: "uppercase",
   cursor: "pointer",
   fontFamily: "'Inter', sans-serif",
   fontWeight: 500,
+  boxShadow: "0 4px 20px rgba(166,120,104,0.3)",
 };
 
 const signupInputStyle: React.CSSProperties = {
@@ -148,16 +149,17 @@ const signupInputStyle: React.CSSProperties = {
 
 const signupButtonStyle: React.CSSProperties = {
   width: "100%",
-  backgroundColor: "#2D2A28",
-  color: "#F5F0EA",
-  border: "1px solid rgba(200,178,138,0.35)",
-  borderRadius: "4px",
+  backgroundColor: "#A67868",
+  color: "#FDF7F2",
+  border: "none",
+  borderRadius: "3px",
   padding: "18px 28px",
   fontSize: "11px",
-  letterSpacing: "0.2em",
+  letterSpacing: "0.22em",
   textTransform: "uppercase",
   cursor: "pointer",
   fontFamily: "'Inter', sans-serif",
   fontWeight: 500,
   marginTop: "4px",
+  boxShadow: "0 4px 20px rgba(166,120,104,0.28)",
 };
