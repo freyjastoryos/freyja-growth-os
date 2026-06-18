@@ -33,9 +33,13 @@ export function AvaValeSubscribeForm({ heroMode, signupMode }: Props) {
         textAlign: "center",
         fontFamily: "'Cormorant Garamond', serif",
       }}>
-        <p style={{ fontSize: "22px", fontStyle: "italic", color: "#4A3F38", lineHeight: "1.7" }}>
+        <p style={{ fontSize: "22px", fontStyle: "italic", color: "#4A3F38", lineHeight: "1.7", marginBottom: "16px" }}>
           The door is open. Welcome inside. 🗝️<br />
           <span style={{ color: "#B8927A" }}>Your welcome gift is on its way.</span>
+        </p>
+        <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "12px", color: "#C8B28A", letterSpacing: "0.08em", fontStyle: "normal" }}>
+          Your gift may take up to 24 hours to arrive.<br />
+          Please check your spam folder if you don&apos;t see it.
         </p>
       </div>
     );
